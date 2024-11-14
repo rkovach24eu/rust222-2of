@@ -1,35 +1,19 @@
 use std::io::{self, BufRead};
 
-fn mini_max_sum(arr: &[i32]) {
-    // Calculate the total sum of the array elements as i64 to handle potential overflow
-    let total_sum: i64 = arr.iter().map(|&x| x as i64).sum();
-
-    // Find the minimum and maximum values in the array
-    let min_element = arr.iter().min().unwrap();
-    let max_element = arr.iter().max().unwrap();
-
-    // Calculate the minimum sum by excluding the maximum element
-    let min_sum = total_sum - *max_element as i64;
-
-    // Calculate the maximum sum by excluding the minimum element
-    let max_sum = total_sum - *min_element as i64;
-
-    // Print the results as required in a single line
-    println!("{} {}", min_sum, max_sum);
+fn staircase(n: i32) {
+    for i in 1..=n {
+        let spaces = " ".repeat((n - i) as usize);
+        let hashes = "#".repeat(i as usize);
+        println!("{}{}", spaces, hashes);
+    }
 }
 
 fn main() {
-    // Reading input from standard input
     let stdin = io::stdin();
     let mut stdin_iterator = stdin.lock().lines();
 
-    // Parse the input line into a vector of integers
-    let arr: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
-        .trim()
-        .split_whitespace()
-        .map(|s| s.parse::<i32>().unwrap())
-        .collect();
+    let n = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
 
-    // Call the miniMaxSum function with the input array
-    mini_max_sum(&arr);
+    staircase(n);
 }
+
