@@ -1,90 +1,47 @@
-#include <bits/stdc++.h>
+use std::io::{self, BufRead};
 
-using namespace std;
+fn plus_minus(arr: &[i32]) {
+    let total = arr.len() as f64;
+    let mut positive_count = 0;
+    let mut negative_count = 0;
+    let mut zero_count = 0;
 
-string ltrim(const string &);
-string rtrim(const string &);
-vector<string> split(const string &);
-
-/*
- * Complete the 'plusMinus' function below.
- *
- * The function accepts INTEGER_ARRAY arr as parameter.
- */
-
-void plusMinus(vector<int> arr) {
-    int positiveCount = 0, negativeCount = 0, zeroCount = 0;
-    int n = arr.size();
-    
-    for (int num : arr) {
-        if (num > 0) positiveCount++;
-        else if (num < 0) negativeCount++;
-        else zeroCount++;
+    // Count the positive, negative, and zero elements
+    for &num in arr {
+        if num > 0 {
+            positive_count += 1;
+        } else if num < 0 {
+            negative_count += 1;
+        } else {
+            zero_count += 1;
+        }
     }
 
-    // Calculating and printing each ratio with six decimal places
-    cout << fixed << setprecision(6) << (double)positiveCount / n << endl;
-    cout << fixed << setprecision(6) << (double)negativeCount / n << endl;
-    cout << fixed << setprecision(6) << (double)zeroCount / n << endl;
+    // Calculate the ratios
+    let positive_ratio = positive_count as f64 / total;
+    let negative_ratio = negative_count as f64 / total;
+    let zero_ratio = zero_count as f64 / total;
+
+    // Print the results with six decimal places
+    println!("{:.6}", positive_ratio);
+    println!("{:.6}", negative_ratio);
+    println!("{:.6}", zero_ratio);
 }
 
-int main()
-{
-    string n_temp;
-    getline(cin, n_temp);
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
 
-    int n = stoi(ltrim(rtrim(n_temp)));
+    // Read the number of elements (though we don't need to use it directly in this solution)
+    let _n = stdin_iterator.next().unwrap().unwrap().trim().parse::<i32>().unwrap();
 
-    string arr_temp_temp;
-    getline(cin, arr_temp_temp);
+    // Parse the array from the second line of input
+    let arr: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim()
+        .split_whitespace()
+        .map(|s| s.parse::<i32>().unwrap())
+        .collect();
 
-    vector<string> arr_temp = split(rtrim(arr_temp_temp));
-
-    vector<int> arr(n);
-
-    for (int i = 0; i < n; i++) {
-        int arr_item = stoi(arr_temp[i]);
-        arr[i] = arr_item;
-    }
-
-    plusMinus(arr);
-
-    return 0;
-}
-
-string ltrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
-
-    return s;
-}
-
-string rtrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
-
-    return s;
-}
-
-vector<string> split(const string &str) {
-    vector<string> tokens;
-    string::size_type start = 0;
-    string::size_type end = 0;
-
-    while ((end = str.find(" ", start)) != string::npos) {
-        tokens.push_back(str.substr(start, end - start));
-        start = end + 1;
-    }
-
-    tokens.push_back(str.substr(start));
-
-    return tokens;
+    // Call the plus_minus function with the input array
+    plus_minus(&arr);
 }
