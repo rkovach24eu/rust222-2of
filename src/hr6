@@ -1,53 +1,35 @@
-#include <bits/stdc++.h>
+use std::io::{self, BufRead};
 
-using namespace std;
+fn mini_max_sum(arr: &[i32]) {
+    // Calculate the total sum of the array elements as i64 to handle potential overflow
+    let total_sum: i64 = arr.iter().map(|&x| x as i64).sum();
 
-string ltrim(const string &);
-string rtrim(const string &);
+    // Find the minimum and maximum values in the array
+    let min_element = arr.iter().min().unwrap();
+    let max_element = arr.iter().max().unwrap();
 
-/*
- * Complete the 'staircase' function below.
- *
- * The function accepts INTEGER n as parameter.
- */
+    // Calculate the minimum sum by excluding the maximum element
+    let min_sum = total_sum - *max_element as i64;
 
-void staircase(int n) {
-    for (int i = 1; i <= n; i++) {
-        // Print n - i spaces, followed by i '#' characters
-        cout << string(n - i, ' ') << string(i, '#') << endl;
-    }
+    // Calculate the maximum sum by excluding the minimum element
+    let max_sum = total_sum - *min_element as i64;
+
+    // Print the results as required in a single line
+    println!("{} {}", min_sum, max_sum);
 }
 
-int main()
-{
-    string n_temp;
-    getline(cin, n_temp);
+fn main() {
+    // Reading input from standard input
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
 
-    int n = stoi(ltrim(rtrim(n_temp)));
+    // Parse the input line into a vector of integers
+    let arr: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+        .trim()
+        .split_whitespace()
+        .map(|s| s.parse::<i32>().unwrap())
+        .collect();
 
-    staircase(n);
-
-    return 0;
-}
-
-string ltrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
-
-    return s;
-}
-
-string rtrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
-
-    return s;
+    // Call the miniMaxSum function with the input array
+    mini_max_sum(&arr);
 }
