@@ -1,98 +1,35 @@
-#include <bits/stdc++.h>
+use std::io::{self, BufRead};
 
-using namespace std;
+fn diagonal_difference(arr: &[Vec<i32>]) -> i32 {
+    let n = arr.len();
+    let mut primary_diagonal_sum = 0;
+    let mut secondary_diagonal_sum = 0;
 
-string ltrim(const string &);
-string rtrim(const string &);
-vector<string> split(const string &);
-
-/*
- * Complete the 'diagonalDifference' function below.
- *
- * The function is expected to return an INTEGER.
- * The function accepts 2D_INTEGER_ARRAY arr as parameter.
- */
-
-int diagonalDifference(vector<vector<int>> arr) {
-    int primaryDiagonalSum = 0;
-    int secondaryDiagonalSum = 0;
-    int n = arr.size();
-
-    for (int i = 0; i < n; i++) {
-        primaryDiagonalSum += arr[i][i];                  // Primary diagonal
-        secondaryDiagonalSum += arr[i][n - i - 1];        // Secondary diagonal
+    for i in 0..n {
+        primary_diagonal_sum += arr[i][i];
+        secondary_diagonal_sum += arr[i][n - 1 - i];
     }
 
-    return abs(primaryDiagonalSum - secondaryDiagonalSum); // Absolute difference
+    (primary_diagonal_sum - secondary_diagonal_sum).abs()
 }
 
-int main()
-{
-    ofstream fout(getenv("OUTPUT_PATH"));
+fn main() {
+    let stdin = io::stdin();
+    let mut stdin_iterator = stdin.lock().lines();
 
-    string n_temp;
-    getline(cin, n_temp);
+    let n = stdin_iterator.next().unwrap().unwrap().trim().parse::<usize>().unwrap();
 
-    int n = stoi(ltrim(rtrim(n_temp)));
+    let mut arr: Vec<Vec<i32>> = Vec::with_capacity(n);
 
-    vector<vector<int>> arr(n);
-
-    for (int i = 0; i < n; i++) {
-        arr[i].resize(n);
-
-        string arr_row_temp_temp;
-        getline(cin, arr_row_temp_temp);
-
-        vector<string> arr_row_temp = split(rtrim(arr_row_temp_temp));
-
-        for (int j = 0; j < n; j++) {
-            int arr_row_item = stoi(arr_row_temp[j]);
-            arr[i][j] = arr_row_item;
-        }
+    for _ in 0..n {
+        let row: Vec<i32> = stdin_iterator.next().unwrap().unwrap()
+            .trim_end()
+            .split(' ')
+            .map(|s| s.parse::<i32>().unwrap())
+            .collect();
+        arr.push(row);
     }
 
-    int result = diagonalDifference(arr);
-
-    fout << result << "\n";
-
-    fout.close();
-
-    return 0;
-}
-
-string ltrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
-
-    return s;
-}
-
-string rtrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
-
-    return s;
-}
-
-vector<string> split(const string &str) {
-    vector<string> tokens;
-    string::size_type start = 0;
-    string::size_type end = 0;
-
-    while ((end = str.find(" ", start)) != string::npos) {
-        tokens.push_back(str.substr(start, end - start));
-        start = end + 1;
-    }
-
-    tokens.push_back(str.substr(start));
-
-    return tokens;
+    let result = diagonal_difference(&arr);
+    println!("{}", result);
 }
