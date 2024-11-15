@@ -19,6 +19,26 @@ mod practice12;
 mod practice13;
 mod practice14;
 mod practice16;
+mod hr1;
+mod hr2;
+mod hr3;
+mod hr4;
+mod hr5;
+mod hr6;
+mod hr7;
+mod hr8;
+mod hr9;
+mod hr10;
+mod hr11;
+mod hr12;
+mod hr13;
+mod hr14;
+mod hr15;
+mod hr16;
+mod hr17;
+mod hr18;
+mod hr19;
+mod hr20;
 
 fn main() {
     println!("Hello, world!");
